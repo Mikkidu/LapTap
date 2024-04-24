@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AlexDev.LapTap
 {
-    public class Builder : MonoBehaviour
+    public class CardsBuilder : MonoBehaviour
     {
         #region Serialize Private Fields
 
@@ -31,19 +31,12 @@ namespace AlexDev.LapTap
 
         #endregion
 
-        #region MonoBehaviourCallbacks
-
-        void Start()
-        {
-            BuildCards(_columns, _rows);
-        }
-
-        #endregion
-
         #region Public Fields
 
-        private CardController[,] BuildCards(int columnsNumber, int rowsNumber)
+        public CardController[,] BuildCards(ref CardData[,] cards)
         {
+            _columns = cards!.GetLength(0);
+            _rows = cards!.GetLength(1);
             int maxLength = _columns > _rows ? _columns : _rows;
             _scaleFactor = 2f / maxLength;
             _spawnStep = (_cardSize + _gapSize) * _scaleFactor / 2f;
@@ -52,7 +45,7 @@ namespace AlexDev.LapTap
             float cornerY = -_spawnStep * _rows;
             _cornerPosition = new Vector3(cornerX, cornerY) + transform.position;
 
-            CardData[,] cards = GenerateCardPack();
+            GenerateCardPackID(ref cards);
 
             return SpawnCards(cards);
         }
@@ -61,9 +54,8 @@ namespace AlexDev.LapTap
 
         #region Private Methods 
 
-        private CardData[,] GenerateCardPack()
+        private void GenerateCardPackID(ref CardData[,] cards)
         {
-            var cards = new CardData[_columns, _rows];
             int cardCount = _columns * _rows;
             int startID = Random.Range(0, _cardMaterials.Length - cardCount / 2);
             List<int> idList = Enumerable.Range(startID, cardCount / 2).ToList();
@@ -74,11 +66,11 @@ namespace AlexDev.LapTap
                 for (int j = 0; j < _rows; j++)
                 {
                     randomIndex = Random.Range(0, idList.Count);
+
                     cards[i, j] = new CardData(idList[randomIndex]);
                     idList.RemoveAt(randomIndex);
                 }
             }
-            return cards;
         }
 
         private CardController[,] SpawnCards(CardData[,] cards)

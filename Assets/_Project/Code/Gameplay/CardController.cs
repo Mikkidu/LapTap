@@ -13,11 +13,18 @@ namespace AlexDev.LapTap
 
         #endregion
 
+        #region Public Fields
+
+        public int column { get; private set; }
+        public int row { get; private set; }
+
+        #endregion
+
         #region Private Fields
 
         private bool _isOpen;
         private bool _isDone;
-        private int[] _place;
+
 
         private Animator _animator;
 
@@ -26,14 +33,15 @@ namespace AlexDev.LapTap
         public void Initialize(Texture2D cardTexture, int column, int row, bool isOpen = false, bool isDone = false)
         {
             _cardRenderer.materials[2].SetTexture("_BaseMap", cardTexture);
-            _place = new int[2] { column, row };
+            this.column = column;
+            this.row = row;
             _isOpen = isOpen;
             _isDone = isDone;
         }
 
         #region Events
 
-        public event Action<int[]> CardSwitchedEvent;
+        public event Action<int, int> CardSwitchedEvent;
 
         #endregion
 
@@ -56,28 +64,34 @@ namespace AlexDev.LapTap
             if (_isOpen) return;
             _isOpen = true;
             OpenCard();
-            CardSwitchedEvent?.Invoke(_place);
+            CardSwitchedEvent?.Invoke(column, row);
         }
 
         #endregion
 
         #region Public Methods
 
-        public void CloseCard()
+        public void HideCard(bool isDone)
         {
-            _isOpen = false;
-            _animator.SetBool("isOpen", false);
-        }
-
-        public void DetroyCard()
-        {
-            _isDone = true;
-            _animator.SetBool("isDone", true);
+            if (isDone) DestroyCard();
+            else CloseCard();
         }
 
         #endregion
 
         #region Private Methods
+
+        private void CloseCard()
+        {
+            _isOpen = false;
+            _animator.SetBool("isOpen", false);
+        }
+
+        private void DestroyCard()
+        {
+            _isDone = true;
+            _animator.SetBool("isDone", true);
+        }
 
         private void OpenCard()
         {
