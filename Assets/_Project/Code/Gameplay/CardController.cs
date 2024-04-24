@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace AlexDev.LapTap
@@ -11,7 +9,7 @@ namespace AlexDev.LapTap
 
         #region Serialize Private Fields
 
-        [SerializeField] private MeshRenderer _cardRenderer;
+        [SerializeField] private Renderer _cardRenderer;
 
         #endregion
 
@@ -25,8 +23,9 @@ namespace AlexDev.LapTap
 
         #endregion
 
-        public void Initialize(int id, int column, int row, bool isOpen = false, bool isDone = false)
+        public void Initialize(Texture2D cardTexture, int column, int row, bool isOpen = false, bool isDone = false)
         {
+            _cardRenderer.materials[2].SetTexture("_BaseMap", cardTexture);
             _place = new int[2] { column, row };
             _isOpen = isOpen;
             _isDone = isDone;

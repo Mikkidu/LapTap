@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace AlexDev.LapTap
@@ -16,6 +18,8 @@ namespace AlexDev.LapTap
 
         [SerializeField] private float _cardSize;
         [SerializeField] private float _gapSize;
+
+        [SerializeField] private Texture2D[] _cardMaterials;
 
         #endregion
 
@@ -48,17 +52,39 @@ namespace AlexDev.LapTap
             float cornerY = -_spawnStep * _rows;
             _cornerPosition = new Vector3(cornerX, cornerY) + transform.position;
 
-            return SpawnCards();
+            CardData[,] cards = GenerateCardPack();
+
+            return SpawnCards(cards);
         }
 
         #endregion
 
         #region Private Methods 
 
-        private CardController[,] SpawnCards()
+        private CardData[,] GenerateCardPack()
         {
-            
-            CardController[,] cardController = new CardController[_columns, _rows];
+            var cards = new CardData[_columns, _rows];
+            int cardCount = _columns * _rows;
+            int startID = Random.Range(0, _cardMaterials.Length - cardCount / 2);
+            List<int> idList = Enumerable.Range(startID, cardCount / 2).ToList();
+            idList.AddRange(idList);
+            int randomIndex;
+            for (int i = 0; i < _columns; i++)
+            {
+                for (int j = 0; j < _rows; j++)
+                {
+                    randomIndex = Random.Range(0, idList.Count);
+                    cards[i, j] = new CardData(idList[randomIndex]);
+                    idList.RemoveAt(randomIndex);
+                }
+            }
+            return cards;
+        }
+
+        private CardController[,] SpawnCards(CardData[,] cards)
+        {
+            CardController[,] cardController = 
+                new CardController[cards.GetLength(0), cards.GetLength(1)];
             float x;
             float y;
             Vector2 spawnPosition;
@@ -74,8 +100,14 @@ namespace AlexDev.LapTap
                         spawnPosition, 
                         Quaternion.identity, 
                         transform);
+
                     cardController[i, j].transform.localScale *= _scaleFactor;
-                    cardController[i, j].Initialize(0, i, j);
+                    cardController[i, j].Initialize(
+                        _cardMaterials[cards[i,j].id], 
+                        i, 
+                        j, 
+                        cards[i, j].isOpen, 
+                        cards[i, j].isDone);
                 }
             }
             return cardController;

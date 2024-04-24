@@ -616,6 +616,27 @@ MonoBehaviour:
     type: 3}
   _cardSize: 4
   _gapSize: 2
+  _cardMaterials:
+  - {fileID: 2800000, guid: 22412e023604ef247a3334d99b58f29f, type: 3}
+  - {fileID: 2800000, guid: 1cb2e6cbaba07d6499db3de49348baa2, type: 3}
+  - {fileID: 2800000, guid: acc426f64cfaee34dbca2d4bc6c7ec23, type: 3}
+  - {fileID: 2800000, guid: bd0ef7bee6d73e74ca4f13c231e7f5b4, type: 3}
+  - {fileID: 2800000, guid: f23371b3fc0d3af4588dad0ffb3d8985, type: 3}
+  - {fileID: 2800000, guid: 2d1112526f0d72b4ea80eba57fc46553, type: 3}
+  - {fileID: 2800000, guid: bb1f98433219727478366907a772d8b8, type: 3}
+  - {fileID: 2800000, guid: 0a36ea845d919a54a99ae5b3f1c29118, type: 3}
+  - {fileID: 2800000, guid: 00d9f41d26bd0a64fbbbc7f318a0bda7, type: 3}
+  - {fileID: 2800000, guid: 44917d0d43a2141479d344de60f4fea0, type: 3}
+  - {fileID: 2800000, guid: c53b34936d2e56444bbddabcc3d00532, type: 3}
+  - {fileID: 2800000, guid: 177db4095d1a2614aa27481acf90d3ac, type: 3}
+  - {fileID: 2800000, guid: ca4a0936ecb13154ca05945e330fa53a, type: 3}
+  - {fileID: 2800000, guid: 03f4454e59976ee46beee1b248f4a7b3, type: 3}
+  - {fileID: 2800000, guid: e4c189666861c38448e06c7c57a71814, type: 3}
+  - {fileID: 2800000, guid: fe505e4e590199f4ea41a691384d02dc, type: 3}
+  - {fileID: 2800000, guid: b8de77353f9388b468c9b067aeb5b241, type: 3}
+  - {fileID: 2800000, guid: e58f6aa02e43e854da30d4b3ab3f7557, type: 3}
+  - {fileID: 2800000, guid: 15f7e899eb866f14faf360fbfd93bb97, type: 3}
+  - {fileID: 2800000, guid: 2374795aec50eed46bf4e915b2544878, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
