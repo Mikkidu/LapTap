@@ -62,9 +62,26 @@ namespace AlexDev.DataModule
             SaveData(typeof(T).ToString(), data);
         }
 
+        public void SaveArrayData<T>(T[] dataArray) where T : class
+        {
+            string json = JsonHelper.ToJson(dataArray);
+            string filename = typeof(T).ToString();
+            File.WriteAllText(Application.persistentDataPath + $"/{filename}.json", json);
+        }
+
         public bool TryLoadData<T>(out T dataObject) where T : class
         {
             return TryLoadData<T>(typeof(T).ToString(), out dataObject);
+        }
+
+        public bool TryLoadArrayData<T>(out T[] dataArray) where T : class
+        {
+            dataArray = LoadArrayData<T>(typeof(T).ToString());
+            if (dataArray != null)
+            {
+                return true;
+            }
+            return false;
         }
 
         #endregion
@@ -77,6 +94,8 @@ namespace AlexDev.DataModule
             File.WriteAllText(Application.persistentDataPath + $"/{saveFileName}.json", json);
         }
 
+        
+
         private bool TryLoadData<T>(string fileName, out T dataObject) where T : class
         {
             dataObject = LoadData<T>(fileName);
@@ -88,6 +107,7 @@ namespace AlexDev.DataModule
         }
 
 
+
         private T LoadData<T>(string saveFileName) where T : class
         {
             T loadedData;
@@ -96,6 +116,22 @@ namespace AlexDev.DataModule
             {
                 string json = File.ReadAllText(path);
                 loadedData = JsonUtility.FromJson<T>(json);
+            }
+            else
+            {
+                loadedData = null;
+            }
+            return loadedData;
+        }
+
+        private T[] LoadArrayData<T>(string saveFileName) where T : class
+        {
+            T[] loadedData;
+            string path = Application.persistentDataPath + $"/{saveFileName}.json";
+            if (File.Exists(path))
+            {
+                string json = File.ReadAllText(path);
+                loadedData = JsonHelper.FromJson<T>(json);
             }
             else
             {

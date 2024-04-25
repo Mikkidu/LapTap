@@ -56,7 +56,7 @@ namespace AlexDev.LapTap
         {
             _animator.SetBool("isOpen", _isOpen);
             _animator.SetBool("isDone", _isDone);
-            
+            if (_isDone) gameObject.SetActive(false);
         }
 
         private void OnMouseUp()

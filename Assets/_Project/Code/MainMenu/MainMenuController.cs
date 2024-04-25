@@ -23,8 +23,10 @@ namespace AlexDev.LapTap
         void Start()
         {
             _dataManager = DataManager.instance;
+
             _menuUI.ContinueButtonPressedEvent += StartSavedGame;
             _menuUI.StartButtonPressedEvent += StartNewGame;
+            _menuUI.ExitButtonPressedEvent += ExitGame;
 
             if (_dataManager.TryLoadData(out _gameData))
             {
@@ -57,6 +59,12 @@ namespace AlexDev.LapTap
         private void StartSavedGame()
         {
             SceneManager.LoadScene(1);
+        }
+
+
+        private void ExitGame()
+        {
+            Application.Quit();
         }
 
         #endregion

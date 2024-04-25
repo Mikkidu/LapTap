@@ -65,13 +65,13 @@ namespace AlexDev.LapTap
 
         public void ShowRezultsScreen(int score, int turns)
         {
-            _resultsPanel.Initialize(score, turns);
+            _resultsPanel.Initialize(score, turns / 2);
             _resultsPanel.gameObject.SetActive(true);
         }
 
         public void ShowNameInputPanel(int score, int turns)
         {
-            _resultsPanel.Initialize(score, turns);
+            _resultsPanel.Initialize(score, turns / 2);
             _recordNameinputPanel.SetPlaseholderText("cool broh");
             _recordNameinputPanel.gameObject.SetActive(true);
         }

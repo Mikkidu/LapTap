@@ -19,7 +19,7 @@ namespace AlexDev.LapTap
         [SerializeField] private float _cardSize;
         [SerializeField] private float _gapSize;
 
-        [SerializeField] private Texture2D[] _cardMaterials;
+        [SerializeField] private Texture2D[] _cardTextures;
 
         #endregion
 
@@ -33,6 +33,12 @@ namespace AlexDev.LapTap
 
         #region Public Fields
 
+        public CardController[,] BuildNewCards(ref CardData[,] cards)
+        {
+            GenerateCardPackID(ref cards);
+            return BuildCards(ref cards);
+        }
+
         public CardController[,] BuildCards(ref CardData[,] cards)
         {
             _columns = cards!.GetLength(0);
@@ -45,8 +51,6 @@ namespace AlexDev.LapTap
             float cornerY = -_spawnStep * _rows;
             _cornerPosition = new Vector3(cornerX, cornerY) + transform.position;
 
-            GenerateCardPackID(ref cards);
-
             return SpawnCards(cards);
         }
 
@@ -56,17 +60,18 @@ namespace AlexDev.LapTap
 
         private void GenerateCardPackID(ref CardData[,] cards)
         {
-            int cardCount = _columns * _rows;
-            int startID = Random.Range(0, _cardMaterials.Length - cardCount / 2);
+            int columns = cards!.GetLength(0);
+            int rows = cards!.GetLength(1);
+            int cardCount = columns * rows;
+            int startID = Random.Range(0, _cardTextures.Length - cardCount / 2);
             List<int> idList = Enumerable.Range(startID, cardCount / 2).ToList();
             idList.AddRange(idList);
             int randomIndex;
-            for (int i = 0; i < _columns; i++)
+            for (int i = 0; i < columns; i++)
             {
-                for (int j = 0; j < _rows; j++)
+                for (int j = 0; j < rows; j++)
                 {
                     randomIndex = Random.Range(0, idList.Count);
-
                     cards[i, j] = new CardData(idList[randomIndex]);
                     idList.RemoveAt(randomIndex);
                 }
@@ -95,7 +100,7 @@ namespace AlexDev.LapTap
 
                     cardController[i, j].transform.localScale *= _scaleFactor;
                     cardController[i, j].Initialize(
-                        _cardMaterials[cards[i,j].id], 
+                        _cardTextures[cards[i,j].id], 
                         i, 
                         j, 
                         cards[i, j].isOpen, 

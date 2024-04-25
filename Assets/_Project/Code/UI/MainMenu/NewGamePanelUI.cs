@@ -1,10 +1,19 @@
 using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace AlexDev.LapTap
 {
     public class NewGamePanelUI : MonoBehaviour
     {
+        #region Serialize Private Feilds
+
+        [SerializeField] private TMP_Dropdown _columnsDropdown;
+        [SerializeField] private TMP_Dropdown _rowsDropdown;
+
+        #endregion
+
         #region Private Fields
 
         private int columns;
@@ -18,14 +27,24 @@ namespace AlexDev.LapTap
 
         #endregion
 
-        #region Publick Methods
+        #region MonoBehaviour Callbacks
 
-        public void SetRows(int columnsOptionValue)
+        private void Start()
         {
-            columns = (columnsOptionValue + 2) * 2;
+            SetColumns(_columnsDropdown.value);
+            SetRows(_rowsDropdown.value);
         }
 
-        public void SetColumns(int rowsOptionValue)
+        #endregion
+
+        #region Publick Methods
+
+        public void SetColumns(int columnsOptionValue)
+        {
+            columns = (columnsOptionValue + 1) * 2;
+        }
+
+        public void SetRows(int rowsOptionValue)
         {
             rows = rowsOptionValue + 2;
         }

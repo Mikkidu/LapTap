@@ -4605,6 +4605,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 306e8b7530bb9e3419a1fd95ca0020ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _columnsDropdown: {fileID: 104955664}
+  _rowsDropdown: {fileID: 704795038}
 --- !u!1 &1744731255
 GameObject:
   m_ObjectHideFlags: 0

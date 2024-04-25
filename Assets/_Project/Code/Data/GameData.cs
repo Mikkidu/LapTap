@@ -14,6 +14,6 @@ public class GameData
     public int comboCount;
     public int cardLeft;
     public int lastMatchTurn;
-    public int lastCardColumn;
-    public int lastCardRow;
+    public int previousCardColumn;
+    public int previousCardRow;
 }

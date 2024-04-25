@@ -16,6 +16,7 @@ namespace AlexDev.LapTap
         #region Events
 
         public event Action ContinueButtonPressedEvent;
+        public event Action ExitButtonPressedEvent;
         public event Action<int, int> StartButtonPressedEvent;
 
         #endregion
@@ -34,7 +35,12 @@ namespace AlexDev.LapTap
 
         public void EnableContinueButton()
         {
-            _continueButton.enabled = true;
+            _continueButton.interactable = true;
+        }
+
+        public void OnExitButtonPressed()
+        {
+            ExitButtonPressedEvent?.Invoke();
         }
 
         #endregion
