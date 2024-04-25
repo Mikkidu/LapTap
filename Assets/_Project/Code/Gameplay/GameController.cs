@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace AlexDev.LapTap
         #region Serialize Private Fields
 
         [SerializeField] private CardsBuilder _builder;
+        [SerializeField] private GameUI _gameUI;
 
         [Range(2, 6)]
         [SerializeField] private int _columns = 2;
@@ -27,25 +29,43 @@ namespace AlexDev.LapTap
         private CardController[,] _cardControllers;
         private int _lastMatchTurn;
         private CardController _previousCardController;
-        private int _bonus = 1;
+        private int _bonus;
+        private int _comboCounts;
+        private int _cardLeft;
+
+        #endregion
+
+        #region Events
+
+        public event Action<int> TurnChangedEvent;
+        public event Action<int> ScoreChangedEvent;
+        public event Action<int, int> ComboChangedEvent;
 
         #endregion
 
         #region MonoBehaviour Callbacks
 
+        private void Awake()
+        {
+            ScoreChangedEvent += _gameUI.UpdateScore;
+            TurnChangedEvent += _gameUI.UpdateTurn;
+            ComboChangedEvent += _gameUI.UpdateComboCount;
+            
+        }
+
         void Start()
         {
+            ScoreChangedEvent?.Invoke(_score);
+            TurnChangedEvent?.Invoke(_currentTurn);
+            ComboChangedEvent?.Invoke(_comboCounts, _bonus);
+
+            _cardLeft = _columns * _rows;
             _cardDatas = new CardData[_columns, _rows];
             _cardControllers = _builder.BuildCards(ref _cardDatas);
             foreach (var card in _cardControllers)
             {
                 card.CardSwitchedEvent += CheckCard;
             }
-        }
-
-        void Update()
-        {
-        
         }
 
         #endregion
@@ -55,6 +75,7 @@ namespace AlexDev.LapTap
         public void CheckCard(int column, int row)
         {
             _currentTurn++;
+            TurnChangedEvent?.Invoke(_currentTurn);
             if ((_currentTurn % 2) == 0)
             {
                 EvenTurn(column, row);
@@ -84,19 +105,33 @@ namespace AlexDev.LapTap
                     _bonus = 1;
                 }
                 _score += _bonus;
+                ScoreChangedEvent?.Invoke(_score);
                 _lastMatchTurn = _currentTurn;
+                _comboCounts++;
+                _cardLeft -= 2;
+                if (_cardLeft <= 0)
+                {
+                    GameOver();
+                }
             }
             else
             {
                 isDone = false;
+                _comboCounts = 0;
+                _bonus = 0;
             }
-
+            ComboChangedEvent?.Invoke(_comboCounts, _bonus);
             StartCoroutine(HideCards(isDone, _previousCardController, _cardControllers[column, row]));
         }
 
         private void OddTurn(int column, int row)
         {
             _previousCardController = _cardControllers[column, row];
+        }
+
+        private void GameOver()
+        {
+
         }
 
         IEnumerator HideCards(bool isDone, params CardController[] cardControllers)
