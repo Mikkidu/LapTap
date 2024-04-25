@@ -2,7 +2,7 @@ using System.IO;
 using UnityEngine;
 
 
-namespace AlexDev.DataManager
+namespace AlexDev.DataModule
 {
 
     public class DataManager : MonoBehaviour

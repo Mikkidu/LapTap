@@ -152,7 +152,7 @@ namespace AlexDev.LapTap
             {
                 SaveGame();
             }
-            SceneManager.LoadScene("MainMenu");
+            SceneManager.LoadScene(0);
         }
 
         private void SaveGame()

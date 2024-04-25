@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AlexDev.DataManager
+namespace AlexDev.DataModule
 {
     [Serializable]
     public class GameSettingsData
