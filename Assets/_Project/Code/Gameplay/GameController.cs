@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace AlexDev.LapTap
 {
@@ -25,6 +26,8 @@ namespace AlexDev.LapTap
 
         private int _currentTurn;
         private int _score;
+        private int _hiScore;
+        private string _recordName = "";
         private CardData[,] _cardDatas;
         private CardController[,] _cardControllers;
         private int _lastMatchTurn;
@@ -50,7 +53,9 @@ namespace AlexDev.LapTap
             ScoreChangedEvent += _gameUI.UpdateScore;
             TurnChangedEvent += _gameUI.UpdateTurn;
             ComboChangedEvent += _gameUI.UpdateComboCount;
-            
+
+            _gameUI.MainMenuButtonPressedEvent += ExitToMainMenu;
+            _gameUI.RecordPlayerNameEnteredEvent += SaveRecord;
         }
 
         void Start()
@@ -58,7 +63,7 @@ namespace AlexDev.LapTap
             ScoreChangedEvent?.Invoke(_score);
             TurnChangedEvent?.Invoke(_currentTurn);
             ComboChangedEvent?.Invoke(_comboCounts, _bonus);
-
+            _gameUI.SetHiScore(_hiScore, _recordName);
             _cardLeft = _columns * _rows;
             _cardDatas = new CardData[_columns, _rows];
             _cardControllers = _builder.BuildCards(ref _cardDatas);
@@ -131,8 +136,38 @@ namespace AlexDev.LapTap
 
         private void GameOver()
         {
+            if (_score > _hiScore)
+            {
+                _gameUI.ShowNameInputPanel(_score, _currentTurn);
+            }
+            else
+            {
+                _gameUI.ShowRezultsScreen(_score, _currentTurn);
+            }
+        }
+
+        private void ExitToMainMenu()
+        {
+            if (_cardLeft > 0)
+            {
+                SaveGame();
+            }
+            SceneManager.LoadScene("MainMenu");
+        }
+
+        private void SaveGame()
+        {
 
         }
+
+        private void SaveRecord(string name)
+        {
+
+        }
+
+        #endregion
+
+        #region Coroutines
 
         IEnumerator HideCards(bool isDone, params CardController[] cardControllers)
         {
