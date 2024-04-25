@@ -1,6 +1,7 @@
 using UnityEngine;
 using AlexDev.DataModule;
 using UnityEngine.SceneManagement;
+using AlexDev.CatchMe.Audio;
 
 namespace AlexDev.LapTap
 {
@@ -16,6 +17,8 @@ namespace AlexDev.LapTap
 
         private DataManager _dataManager;
 
+        private AudioManager _audioManager;
+
         private GameData _gameData;
 
         #endregion
@@ -23,6 +26,9 @@ namespace AlexDev.LapTap
         void Start()
         {
             _dataManager = DataManager.instance;
+            _audioManager = AudioManager.instance;
+
+            _audioManager.PlayMusic("MN");
 
             _menuUI.ContinueButtonPressedEvent += StartSavedGame;
             _menuUI.StartButtonPressedEvent += StartNewGame;

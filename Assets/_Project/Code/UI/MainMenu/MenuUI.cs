@@ -1,3 +1,4 @@
+using AlexDev.CatchMe.Audio;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,6 +11,13 @@ namespace AlexDev.LapTap
 
         [SerializeField] private Button _continueButton;
         [SerializeField] private NewGamePanelUI _newGamePanel;
+        [SerializeField] private SettingsPanelUI _settingsUI;
+
+        #endregion
+
+        #region Private Fields
+
+        private AudioManager _audioManager;
 
         #endregion
 
@@ -25,6 +33,9 @@ namespace AlexDev.LapTap
 
         private void Start()
         {
+            _audioManager = AudioManager.instance;
+            _settingsUI.Initialize();
+
             _continueButton.onClick.AddListener(OnContinueButtonPressed);
             _newGamePanel.StartGamePressedEvent += OnStartButtonPressed; 
         }
@@ -41,6 +52,17 @@ namespace AlexDev.LapTap
         public void OnExitButtonPressed()
         {
             ExitButtonPressedEvent?.Invoke();
+        }
+
+        public void PlayPressSound()
+        {
+            _audioManager.PlaySound("PRS");
+        }
+
+        public void PlayApplySound()
+        {
+            _audioManager.PlaySound("APL");
+
         }
 
         #endregion

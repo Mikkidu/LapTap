@@ -1,4 +1,5 @@
 
+using AlexDev.CatchMe.Audio;
 using AlexDev.DataModule;
 using System;
 using System.Collections;
@@ -28,6 +29,7 @@ namespace AlexDev.LapTap
 
         private DataManager _dataManager;
         private GameData _gameData;
+        private AudioManager _audioManager;
 
         private CardData[,] _cardDatas;
         private CardController[,] _cardControllers;
@@ -48,6 +50,8 @@ namespace AlexDev.LapTap
         private void Awake()
         {
             _dataManager = DataManager.instance;
+            _audioManager = AudioManager.instance;
+
             Initialize();
 
             ScoreChangedEvent += _gameUI.UpdateScore;
@@ -60,7 +64,6 @@ namespace AlexDev.LapTap
 
         void Start()
         {
-
             ScoreChangedEvent?.Invoke(_gameData.score);
             TurnChangedEvent?.Invoke(_gameData.turn);
             ComboChangedEvent?.Invoke(_gameData.comboCount, _gameData.bonus);
@@ -153,6 +156,8 @@ namespace AlexDev.LapTap
 
                 _cardDatas[column, row].isDone = true;
                 _cardDatas[_previousCardController.column, _previousCardController.row].isDone = true;
+
+                _audioManager.PlaySound("RGH");
                 if (_gameData.cardLeft <= 0)
                 {
                     GameOver();
@@ -163,6 +168,7 @@ namespace AlexDev.LapTap
                 isDone = false;
                 _gameData.comboCount = 0;
                 _gameData.bonus = 0;
+                _audioManager.PlaySound("OPN");
             }
 
             _cardDatas[column, row].isOpen = false;
@@ -175,10 +181,12 @@ namespace AlexDev.LapTap
         {
             _previousCardController = _cardControllers[column, row];
             _cardDatas[column, row].isOpen = true;
+            _audioManager.PlaySound("OPN");
         }
 
         private void GameOver()
         {
+            _audioManager.PlayMusic("GM");
             if (_gameData.score > _gameData.hiScore)
             {
                 _gameUI.ShowNameInputPanel(_gameData.score, _gameData.turn);

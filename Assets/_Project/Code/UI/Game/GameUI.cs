@@ -1,3 +1,4 @@
+using AlexDev.CatchMe.Audio;
 using System;
 using TMPro;
 using UnityEngine;
@@ -18,6 +19,7 @@ namespace AlexDev.LapTap
 
         [SerializeField] private TextInputPanelUI _recordNameinputPanel;
         [SerializeField] private ResultsPanelUI _resultsPanel;
+        [SerializeField] private SettingsPanelUI _settingsUI;
 
         #endregion
 
@@ -28,10 +30,19 @@ namespace AlexDev.LapTap
 
         #endregion
 
+        #region Private Fields
+
+        private AudioManager _audioManager;
+
+        #endregion
+
         #region MonoBehaviour Callbacks
 
         private void Start()
         {
+            _audioManager = AudioManager.instance;
+            _settingsUI.Initialize();
+
             _recordNameinputPanel.OnConfirmingTextEvent += OnRecordPlaernNameEntered;
             _resultsPanel.MainMenuButtonPressedEvent += OnMainMenuButtonPressed;
         }
@@ -84,6 +95,17 @@ namespace AlexDev.LapTap
         public void OnMainMenuButtonPressed()
         {
             MainMenuButtonPressedEvent?.Invoke();
+        }
+
+        public void PlayPressSound()
+        {
+            _audioManager.PlaySound("PRS");
+        }
+
+        public void PlayApplySound()
+        {
+            _audioManager.PlaySound("APL");
+
         }
 
         #endregion
