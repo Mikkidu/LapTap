@@ -92,6 +92,7 @@ namespace AlexDev.LapTap
 
         public void CheckCard(int column, int row)
         {
+            if (_gameData.hasSavedGame) RemoveSavedGame();
             _gameData.turn++;
             TurnChangedEvent?.Invoke(_gameData.turn);
             if ((_gameData.turn % 2) == 0)
@@ -202,8 +203,15 @@ namespace AlexDev.LapTap
             if (_gameData.cardLeft > 0)
             {
                 SaveGame();
+                SaveCards();
             }
             SceneManager.LoadScene(0);
+        }
+
+        private void RemoveSavedGame()
+        {
+            _gameData.hasSavedGame = false;
+            _dataManager.SaveData(_gameData);
         }
 
         private void SaveGame()
@@ -212,6 +220,10 @@ namespace AlexDev.LapTap
             _gameData.previousCardColumn = _previousCardController.column;
             _gameData.previousCardRow = _previousCardController.row;
             _dataManager.SaveData(_gameData);
+        }
+
+        private void SaveCards()
+        {
             CardData[] saveCardData = _cardDatas.Cast<CardData>().ToArray();
             _dataManager.SaveArrayData<CardData>(saveCardData);
         }
